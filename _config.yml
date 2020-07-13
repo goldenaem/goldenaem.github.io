@@ -68,7 +68,8 @@ google_site_verification :
 bing_site_verification   :
 yandex_site_verification :
 naver_site_verification  :
-disqus : goldenaem
+disqus_url : http://disqus.com/by/goldenaem
+disqus_id : goldenaem
 
 # Social Sharing
 twitter:
