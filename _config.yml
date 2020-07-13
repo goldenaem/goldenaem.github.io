@@ -68,6 +68,7 @@ google_site_verification :
 bing_site_verification   :
 yandex_site_verification :
 naver_site_verification  :
+disqus : goldenaem
 
 # Social Sharing
 twitter:
@@ -96,7 +97,7 @@ analytics:
 author:
   name             : "GoldeNaeM (Hyochang Yang)"
   avatar           : # path of avatar image, e.g. "/assets/images/bio-photo.jpg"
-  bio              : "Deep learning 논문 정리"
+  bio              : "Deep learning 논문 정리, 개인 메모용, 오류/논의는 댓글 부탁드립니다:)"
   location         : "SeongNam"
   email            :
   links:
