@@ -97,7 +97,7 @@ analytics:
 author:
   name             : "GoldeNaeM (Hyochang Yang)"
   avatar           : # path of avatar image, e.g. "/assets/images/bio-photo.jpg"
-  bio              : "Deep learning 논문 정리, 개인 메모용 블로그, 오류 및 추가사항이 있으시면 "
+  bio              : "Deep learning 논문 정리, 개인 메모용, 오류/논의는 댓글 부탁드립니다:)"
   location         : "SeongNam"
   email            :
   links:
