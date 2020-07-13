@@ -20,7 +20,7 @@ locale                   : "en-US"
 title                    : "Memory Note"
 title_separator          : "-"
 subtitle                 : # site tagline that appears below site title in masthead
-name                     : "goldeNaem"
+name                     : "GoldeNaeM"
 description              : "An amazing website."
 url                      : "goldenaem.github.it" # the base hostname & protocol for your site e.g. "https://mmistakes.github.io"
 baseurl                  : "" # the subpath of your site, e.g. "/blog"
@@ -94,9 +94,9 @@ analytics:
 
 # Site Author
 author:
-  name             : "goldeNaem (Hyochang Yang)"
+  name             : "GoldeNaeM (Hyochang Yang)"
   avatar           : # path of avatar image, e.g. "/assets/images/bio-photo.jpg"
-  bio              : "Deep learning "
+  bio              : "Deep learning 논문 정리"
   location         : "SeongNam"
   email            :
   links:
