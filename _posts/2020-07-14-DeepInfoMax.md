@@ -39,113 +39,114 @@ filterbank는 주파수에 따라 특정한 filter를 통해 해당 부분만 �
 
 마지막으로 지금까지의 전처리 방식을 구현한 코드를 정리하고 이용하여 pytorch의 dataset, dataloader, 그리고 tranform을 구현하여 deep learning의 batch단위로 학습하는 방법을 정리하고자 한다.
 
-   import numpy as np
-   import matplotlib.pyplot as plt
-   import librosa
-   import torch
+	import numpy as np
+	import matplotlib.pyplot as plt
+	import librosa
+	import torch
 
-   audio_path = librosa.util.example_audio_file()
-   y, sr = librosa.load(audio_path)
-   x = np.arange(0, len(y), 1)
+	audio_path = librosa.util.example_audio_file()
+	y, sr = librosa.load(audio_path)
+	x = np.arange(0, len(y), 1)
 
 먼저 관련 package를 import한 후에, 예제 파일을 load한다. 이때 x는 y의 index용으로 사용하기 위한 변수.
 
-   plt.plot(x,y)
-   plt.xlable("Time")
-   plt.ylabel("Amplitude")
-   plt.show()
+	plt.plot(x,y)
+	plt.xlable("Time")
+	plt.ylabel("Amplitude")
+	plt.show()
 
 ![wave](/assets/images/wav.png)
 wave를 전체를 그려보면 위와 같다.
 
-   start_point, n_fft = 3000, 2048
-   plt.plot(x[start_point:start_point+n_fft], y[start_point:start_point+n_fft])
-   plt.xlabel('Time')
-   plt.ylabel('Amplitude')
-   plt.show()
+	start_point, n_fft = 3000, 2048
+	plt.plot(x[start_point:start_point+n_fft], y[start_point:start_point+n_fft])
+	plt.xlabel('Time')
+	plt.ylabel('Amplitude')
+	plt.show()
 
 ![wave_split](/assets/images/wav_split.png)
 start_point ~ start_point+n_fft를 확대하여 그리면 위와 같이 파형으로 생긴 결과를 볼 수 있다.
 
-   D = np.abs(librosa.stft(y))
-   print(D.shape, np.max(D), np.min(D), np.mean(D))
+	D = np.abs(librosa.stft(y))
+	print(D.shape, np.max(D), np.min(D), np.mean(D))
 
-   ((1025, 2647), 216.45607, 5.8435834e-10, 0.38008934)
+
+	((1025, 2647), 216.45607, 5.8435834e-10, 0.38008934)
 
 이번엔 wave 전체에 STFT를 적용하고 shape와 최대, 최소, 평균값을 구해보면 다음과 같다.
 
 
-   D = np.abs(librosa.stft(y, n_fft=2048, hop_length=512))
-   plt.plot(D[:,1])
-   plt.xlabel("Frequency")
-   plt.ylabel("Magnitude")
+	D = np.abs(librosa.stft(y, n_fft=2048, hop_length=512))
+	plt.plot(D[:,1])
+	plt.xlabel("Frequency")
+	plt.ylabel("Magnitude")
 
 ![short_freq](/assets/images/short_freq.png)
 n_fft와 hop_length는 mel_spectrogram에서 자세히 정리. 위의 코드에서의 D는 (1025,2647) shape를 가지는 배열이고, 위에 그려진 결과는 그 중 2번째 frame에 대해 Fourier transform을 적용 시킨 결과이다. frequency가 낮은 (200이하) 영역의 주파수대에서 존재하는 wave라는 사실을 알 수 있다.
 
 
-   librosa.display.specshow(D, y_axis='linear', x_axis='time')
-   plt.title('Spectrogram')
-   plt.colorbar(format="%+2.0f")
-   plt.tight_layout()
-   plt.show()
+	librosa.display.specshow(D, y_axis='linear', x_axis='time')
+	plt.title('Spectrogram')
+	plt.colorbar(format="%+2.0f")
+	plt.tight_layout()
+	plt.show()
 
 ![STFT](/assets/images/STFT_result.png)
 STFT의 결과를 그대로 그리면 Hz가 낮은 영역대에서만 조금씩 active 되는걸 확인할 수 있다.(자세히 보면 붉은 점이 보임) 이는 위의 1개의 window에 대해서만 적용된 결과에서 볼 수 있듯이 전반적으로 낮은 주파수 영역대에서 포진된 값이라고 볼 수 있다. 또한 1개의 frame에 STFT하여 나타낸 그래프를 시간대별로 적층해서 나타낸 결과이다.
 
-   librosa.display.specshow(librosa.amplitude_to_db(D, ref=np.max), y_axis='linear', x_axis='time')
-   plt.title('power Spectrogram')
-   plt.colorbar(format="%+2.0f db")
-   plt.tight_layout()
-   plt.show()
+	librosa.display.specshow(librosa.amplitude_to_db(D, ref=np.max), y_axis='linear', x_axis='time')
+	plt.title('power Spectrogram')
+	plt.colorbar(format="%+2.0f db")
+	plt.tight_layout()
+	plt.show()
 
 ![powerSepc](/assets/images/power_spectrogram.png)
 decibel 변환($$L_B = 10 \log_{10} {B \over A}[dB] $$,$$A$$는 np.max)하여 그리면 다음과 같이 고루 active된 결과를 얻을 수 있다.
 
-   mel_128 = librosa.filters.mel(sr=sr, n_fft=2048, n_mels=128)
-   plt.figure(figsize=(15, 4));
+	mel_128 = librosa.filters.mel(sr=sr, n_fft=2048, n_mels=128)
+	plt.figure(figsize=(15, 4));
 
-   plt.subplot(1, 3, 1);
-   librosa.display.specshow(mel_128, sr=sr, hop_length=512, x_axis='linear');
-   plt.ylabel('Mel filter');
-   plt.colorbar();
-   plt.title('1. Our filter bank for converting from Hz to mels.');
+	plt.subplot(1, 3, 1);
+	librosa.display.specshow(mel_128, sr=sr, hop_length=512, x_axis='linear');
+	plt.ylabel('Mel filter');
+	plt.colorbar();
+	plt.title('1. Our filter bank for converting from Hz to mels.');
 
-   plt.subplot(1, 3, 2);
-   mel_10 = librosa.filters.mel(sr=sr, n_fft=2048, n_mels=10)
-   librosa.display.specshow(mel_10, sr=sr, hop_length=512, x_axis='linear');
-   plt.ylabel('Mel filter');
-   plt.colorbar();
-   plt.title('2. Easier to see what is happening with only 10 mels.');
+	plt.subplot(1, 3, 2);
+	mel_10 = librosa.filters.mel(sr=sr, n_fft=2048, n_mels=10)
+	librosa.display.specshow(mel_10, sr=sr, hop_length=512, x_axis='linear');
+	plt.ylabel('Mel filter');
+	plt.colorbar();
+	plt.title('2. Easier to see what is happening with only 10 mels.');
 
-   plt.subplot(1, 3, 3);
-   idxs_to_plot = [0, 9, 49, 99, 127]
-   for i in idxs_to_plot:
-       plt.plot(mel_128[i]);
-   plt.legend(labels=[f'{i+1}' for i in idxs_to_plot]);
-   plt.title('3. Plotting some triangular filters separately.');
+	plt.subplot(1, 3, 3);
+	idxs_to_plot = [0, 9, 49, 99, 127]
+	for i in idxs_to_plot:
+		plt.plot(mel_128[i]);
+	plt.legend(labels=[f'{i+1}' for i in idxs_to_plot]);
+	plt.title('3. Plotting some triangular filters separately.');
 
-   plt.tight_layout();
+	plt.tight_layout();
 
 ![melfilter](/assets/images/mel_filter.png)
 첫번째 사진은 mel_filter의 갯수를 128개, 두번째는 10개를 설정한 그림이다. 위에 mel-filterbank 설명할때 보았던 triangular window mel-filterbank를 specshow하여 표현한 것이다(triangular window를 3차원으로 놓고 위에서 쳐다본다는 느낌으로 생각하면 된다.) 마지막 사진은 filter 중에 0, 9, 49, 99, 127 번 filter만을 나타낸 그림이다.
 
-   plt.plot(D[:,1])
-   plt.plot(mel_128.dot(D[:,1]))
-   plt.legend(labels=['spectrum', 'mel-spectrum'])
-   plt.show()   
+	plt.plot(D[:,1])
+	plt.plot(mel_128.dot(D[:,1]))
+	plt.legend(labels=['spectrum', 'mel-spectrum'])
+	plt.show()   
 
 ![melspectrum](/assets/images/mel-spectrum.png)
 D의 shape가 (1025, 2647)일 때, 2647이 time-domain에 대한 정보이고, 그 중 2번째 frame에 대하여 STFT결과(spectrum)과 mel-filterbank결과(mel-specturm)의 그래프를 나타낸 결과이다. mel-specturm의 길이가 128까지만 나타난 이유는 mel_128이 128개의 filter만을 사용하였기 때문이다.
 
-   mel_spectrogram = librosa.feature.melspectrogram(y, sr=sr, n_mels=128)
-   log_mel_spectrogram = librosa.power_to_db(mel_spectrogram, ref=np.max)
+	mel_spectrogram = librosa.feature.melspectrogram(y, sr=sr, n_mels=128)
+	log_mel_spectrogram = librosa.power_to_db(mel_spectrogram, ref=np.max)
 
-   plt.figure(figsize=(12,4))
-   librosa.display.specshow(log_mel_spectrogram, sr=sr, x_axis='time', y_axis='mel')
-   plt.title('mel power spectrogram')
-   plt.colorbar(format="%+02.0f dB")
-   plt.tight_layout()
+	plt.figure(figsize=(12,4))
+	librosa.display.specshow(log_mel_spectrogram, sr=sr, x_axis='time', y_axis='mel')
+	plt.title('mel power spectrogram')
+	plt.colorbar(format="%+02.0f dB")
+	plt.tight_layout()
 
 ![melSpec](/assets/images/mel_spectrogram.png)
 최종적으로 2번쨰 frame에만 적용했던 mel-filter를 모든 frame에 적용하여 그리면 위와 같다. 이 역시 mel-spectrum을 frame(time-axis)에 따라 적층한 결과이다.
@@ -154,59 +155,59 @@ mel-spectrum에서 cepstral analysis를 적용하여 MFCC라는 coefficient를 �
 
 이제 mel-spectrogram과 wave를 계산하는 방법을 살펴보았으니, [GTZAN](http://marsyas.info/downloads/datasets.html) 데이터셋을 사용하여 pytorch의 dataset, dataloader, transform를 사용한 generator를 만들어보자.
 
-  root_dir = "./GTZAN"
-  csv_list = []
-  genres = []
-  for genre in os.listdir(root_dir):
-    if os.path.isdir(os.path.join(root_dir, genre)):
-      genres.append(genre)
-      for wav_file in os.listdir(os.path.join(root_dir, genre)):
-        csv_list.append([os.path.join(root_dir, genre, wav_file), genre])
-  df = pd.DataFrame(csv_list, columns=['path', 'genre'])
-  df.to_csv(os.path.join(root_dir, "meta.csv"), index=False)
+	root_dir = "./GTZAN"
+	csv_list = []
+	genres = []
+	for genre in os.listdir(root_dir):
+		if os.path.isdir(os.path.join(root_dir, genre)):
+			genres.append(genre)
+			for wav_file in os.listdir(os.path.join(root_dir, genre)):
+				csv_list.append([os.path.join(root_dir, genre, wav_file), genre])
+	df = pd.DataFrame(csv_list, columns=['path', 'genre'])
+	df.to_csv(os.path.join(root_dir, "meta.csv"), index=False)
 
 우선은 GTZAN데이터셋을 다운받고, 코드와 동일한 directory에 unzip한 후에 GTZAN의 파일 path와 genre를 csv로 저장한다. 이 부분이 없이 코드를 작성할 수 있으나 편의상 meta 정보를 담은 csv를 만들어서 사용하려함.
 
-  genre_idx_dict = dict()
-  g = np.array(genres)
-  for genre in genres:
-    # genre_idx_dict[genre] = np.argwhere(g==genre)[0] # for index
-    genre_idx_dict[genre] = np.array(g==genre, dtype=np.int64) # for one-hot
+	genre_idx_dict = dict()
+	g = np.array(genres)
+	for genre in genres:
+		# genre_idx_dict[genre] = np.argwhere(g==genre)[0] # for index
+		genre_idx_dict[genre] = np.array(g==genre, dtype=np.int64) # for one-hot
 
 genre_idx_dict은 label에 대한 정보를 처리할 때 편의를 위해 만든 dictionary이며, 모델의 loss 타입에 따라 index타입이나 one-hot타입을 사용하면 된다.
 
-  class GTZANDataset(Dataset):
-      """
-      GTZAN Dataset.
-      """
-      def __init__(self, csv_file, sample_rate=32000, transform=None):
-          """
-          Args:
-              csv_file (string) : GTZAN의 meta csv가 저장된 path
-              transform (callable, optional) : 샘플에 적용될 optional transform
-          """
-          self.path_genre_dict = pd.read_csv(csv_file)
-          self.transform = transform
-          self.sample_rate = sample_rate
+	class GTZANDataset(Dataset):
+	"""
+	GTZAN Dataset.
+	"""
+		def __init__(self, csv_file, sample_rate=32000, transform=None):
+			"""
+			Args:
+			  csv_file (string) : GTZAN의 meta csv가 저장된 path
+			  transform (callable, optional) : 샘플에 적용될 optional transform
+			"""
+			self.path_genre_dict = pd.read_csv(csv_file)
+			self.transform = transform
+			self.sample_rate = sample_rate
 
-      def __len__(self):
-          return len(self.path_genre_dict)
+		def __len__(self):
+		return len(self.path_genre_dict)
 
-      def __getitem__(self, idx):
-          if torch.is_tensor(idx):
-              idx = idx.tolist()
+		def __getitem__(self, idx):
+			if torch.is_tensor(idx):
+				idx = idx.tolist()
 
-          wav_name = self.path_genre_dict.iloc[idx,0]
-          wav, sr = librosa.load(wav_name, sr=self.sample_rate)
-          genre = self.path_genre_dict.iloc[idx,1]
-          genre_label = genre_idx_dict[genre]
-          sample = {'info' : wav,
-                    'label' : genre_label,
-                    'sample_rate' : sr}
+			wav_name = self.path_genre_dict.iloc[idx,0]
+			wav, sr = librosa.load(wav_name, sr=self.sample_rate)
+			genre = self.path_genre_dict.iloc[idx,1]
+			genre_label = genre_idx_dict[genre]
+			sample = {'info' : wav,
+			        'label' : genre_label,
+			        'sample_rate' : sr}
 
-          if self.transform:
-              sample = self.transform(sample)
-          return sample
+			if self.transform:
+				sample = self.transform(sample)
+			return sample
 
 다음은 pytorch의 Dataset을 상속받아 GTZAN용 dataset 클래스를 선언하였다. len는 dataset의 길이를 나타내주는 method이며, getitem은 추후 dataloader에서 sampling할 때 데이터를 가져오는 method이다.
 
