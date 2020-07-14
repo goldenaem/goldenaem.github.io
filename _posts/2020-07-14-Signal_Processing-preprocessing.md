@@ -55,7 +55,12 @@ filterbank는 주파수에 따라 특정한 filter를 통해 해당 부분만 �
 	import numpy as np
 	import matplotlib.pyplot as plt
 	import librosa
+	import librosa.display
 	import torch
+	from torch.utils.data import Dataset, DataLoader
+	import torchvision.transforms as transforms
+	import os
+	import pandas as pd
 
 	audio_path = librosa.util.example_audio_file()
 	y, sr = librosa.load(audio_path)
@@ -64,7 +69,7 @@ filterbank는 주파수에 따라 특정한 filter를 통해 해당 부분만 �
 먼저 관련 package를 import한 후에, 예제 파일을 load한다. 이때 x는 y의 index용으로 사용하기 위한 변수.
 
 	plt.plot(x,y)
-	plt.xlable("Time")
+	plt.xlabel("Time")
 	plt.ylabel("Amplitude")
 	plt.show()
 
@@ -94,6 +99,7 @@ start_point ~ start_point+n_fft를 확대하여 그리면 위와 같이 파형�
 	plt.plot(D[:,1])
 	plt.xlabel("Frequency")
 	plt.ylabel("Magnitude")
+	plt.show()
 
 ![short_freq](/assets/images/short_freq.png)
 
@@ -197,10 +203,10 @@ mel-spectrum에서 cepstral analysis를 적용하여 MFCC라는 coefficient를 �
 genre_idx_dict은 label에 대한 정보를 처리할 때 편의를 위해 만든 dictionary이며, 모델의 loss 타입에 따라 index타입이나 one-hot타입을 사용하면 된다.
 
 	class GTZANDataset(Dataset):
-	"""
-	GTZAN Dataset.
-	"""
-		def __init__(self, root_dir, csv_file, sample_rate=32000, wave_size = 32000*10, n_fft=2048, hop_length=512, win_length=2048, n_mels=128 transform=None):
+		"""
+		GTZAN Dataset.
+		"""
+		def __init__(self, root_dir, csv_file, sample_rate=32000, wave_size = 32000*10, n_fft=2048, hop_length=512, win_length=2048, n_mels=128, transform=None):
 			"""
 			Args:
 			  csv_file (string) : GTZAN의 meta csv가 저장된 path
@@ -308,7 +314,7 @@ genre_idx_dict은 label에 대한 정보를 처리할 때 편의를 위해 만�
 	gtzan_dataset = GTZANDataset(
 		root_dir=root_dir, 
 		csv_file=os.path.join(root_dir, 'meta.csv'),
-		transform = transform.Compose([
+		transform = transforms.Compose([
 				RandomCrop(wav_crop_size = 320000, spec_crop_size = 600, mode="comb"),
 			])
 		)
@@ -316,17 +322,17 @@ genre_idx_dict은 label에 대한 정보를 처리할 때 편의를 위해 만�
 	indices = list(range(dataset_size))
 	split = int(np.floor(0.3 * dataset_size)) # 0.3 is test set ratio
 	shuffle_dataset = True
-	randome_seed = 42
+	random_seed = 42
 	if shuffle_dataset:
 		np.random.seed(random_seed)
 		np.random.shuffle(indices)
 	trn_indices, tst_indices = indices[split:], indices[:split]
 
 	trn_gtzan_dataset = torch.utils.data.sampler.SubsetRandomSampler(trn_indices)
-	val_gtzan_dataset = torch.utils.data.sampler.SubsetRandomSampler(val_indices)
+	tst_gtzan_dataset = torch.utils.data.sampler.SubsetRandomSampler(tst_indices)
 
     trn_gtzan_dataloader = DataLoader(gtzan_dataset, batch_size = 16, drop_last=True,sampler=trn_gtzan_dataset)
-    val_gtzan_dataloader = DataLoader(gtzan_dataset, batch_size = 16, drop_last=True,sampler=val_gtzan_dataset)    	
+    tst_gtzan_dataloader = DataLoader(gtzan_dataset, batch_size = 16, drop_last=True,sampler=tst_gtzan_dataset)    	
 
 
 dataset 인스턴스를 생성할 때 transform 클래스를 compose로 여러 transform을 조합하여 사용할 수 있다. (위의 예시에서는 1개만 사용함) 또한 **torchaudio.transform**를 이용하면 미리 정의된 transform함수를 편리하게 사용할 수 있다.(ex. torchaudio.transforms.FrequencyMasking, torchaudio.transforms.TimeMasking 등)~~(transform의 예시를 위해 만들었을 뿐 torch에서 미리 정의된 함수 맞춰 사용하는게 더 좋다.)~~ 
