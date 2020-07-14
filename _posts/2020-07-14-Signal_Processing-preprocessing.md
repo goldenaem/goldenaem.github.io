@@ -343,7 +343,7 @@ dataset 인스턴스를 생성할 때 transform 클래스를 compose로 여러 t
 
 dataloader의 사용법은 매우 단순하다. for loop에서 batch 단위로 sample들을 가져오면 위와 같이 미리 선언해둔 key를 통해 접근하여 사용하면 된다. 
 
-관련된 코드의 정리판은 [링크](https://github.com/goldenaem/)에 jupyter notebook형태로 올려두었으니 참고. 
+관련된 코드의 정리판은 [링크](https://github.com/goldenaem/blogs)에 jupyter notebook형태로 올려두었으니 참고.(load가 안될 경우에는 [nbviewer](https://nbviewer.jupyter.org/)를 통해 확인.) 
 
 마지막으로 Wave나 mel-spectrogram등을 사용할때 전체 데이터에 대해서 normalize등을 적용하면 scale 관련 이슈를 해결할 수 있어서 사용해보는게 좋다.
 
