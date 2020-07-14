@@ -44,7 +44,7 @@ time-domain의 데이터를 frequency-domain으로 바꾸는 방법으로 Fourie
 
 mel-filterbank에 대하여 잠깐 살펴보면, 우선 mel이란 mel-scale을 의미하며 위에서 언급한 음에 대한 perceive quantities처럼 사람의 소리 인지 시스템을 반영한 scale 변환 $$Mel(f) = 2595log(1+f/700)$$을 의미한다.
 
-![mel-scale](/assets/images/mel-scale.jpg)
+![mel-scale](/assets/images/mel-scale.png)
 
 filterbank는 주파수에 따라 특정한 filter를 통해 해당 부분만 추출해내는 방법이다. mel-filterbank은 N개의 filterbank 구간들이 mel-scale로 Linaer하게 나눠 triangular filter를 적용하기 때문에 주파수 영역이 Exponential하게 넓어진다. 사람의 인지 구조가 저음역대에서 더 민감하게 반응하기 때문에 낮은 주파수 영역대에 filter를 세밀하게 가진다. 아래의 그림과 같이 색깔별 그래프를 가중치 곱하여 정보를 추출하기에, 노이즈가 제거된 정보를 얻을 수 있으며 filterbank간 overlap 되는 부분이 존재하므로 filtering된 결과 사이의 상관관계가 존재할 수 있다.
 
@@ -85,7 +85,6 @@ start_point ~ start_point+n_fft를 확대하여 그리면 위와 같이 파형�
 	D = np.abs(librosa.stft(y))
 	print(D.shape, np.max(D), np.min(D), np.mean(D))
 
- 
 	((1025, 2647), 216.45607, 5.8435834e-10, 0.38008934)
 
 이번엔 wave 전체에 STFT를 적용하고 shape와 최대, 최소, 평균값을 구해보면 다음과 같다.
