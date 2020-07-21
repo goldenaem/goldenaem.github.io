@@ -18,7 +18,7 @@ deep learning에서 자주쓰이는 cross-entropy loss는 두개의 probability 
 
 이와 관련해서 두 확률분포사이의 거리(엄밀하게는 거리라고 할 수 없음)를 계산하는 함수로 Kullback-Leibler divergence(KLD)가 있다. $$D_{KL}(\mathbb{P}\|\|\mathbb{Q}) = \sum_{x}P(x) \log {P(x) \over Q(x)}$$로 표현하며, deep learning에서는 Variational AutoEncoder 등에서 다른 분포를 통해 이상적인 분포를 근사시켜 샘플링하는 방법으로 사용됨.
 
-2개의 random variable중에 하나가 주어졌을 때, 다른 하나의 정보량을 나타내는 conditional entropy(조건부 정보량)은 $$H(X|Y) = \mathbb{E}_{Y}[H(X\|y)] = -\sum_{y \in Y}p(y)\sum_{x \in X}p(x\|y)\log p(x\|y) = - \sum_{x,y}p(x,y)\log p(x\|y)$$로 표현할 수 있다. 
+2개의 random variable중에 하나가 주어졌을 때, 다른 하나의 정보량을 나타내는 conditional entropy(조건부 정보량)은 $$H(X \| Y) = \mathbb{E}_{Y}[H(X \| y)] = -\sum_{y \in Y}p(y)\sum_{x \in X}p(x\|y)\log p(x\|y) = - \sum_{x,y}p(x,y)\log p(x\|y)$$로 표현할 수 있다. 
 
 해당 포스트에서 중점적으로 다루고자하는 내용인 mutual information은 상호 정보량이며, 다른 random variable를 관찰하여 하나의 random variable에 대하여 얻을 수 있는 정보량을 말한다. 쉽게 말해 두 random variable의 정보량의 intersection(교집합), 공유하고 있는 정보량이라고 해석할 수 있다. $$I(X;Y) = \sum_{x,y}p(x,y) \log {p(x,y)\over p(x)p(y)}$$ (joint entropy에서 사용하는 comma와 mutual information의 semi-colon은 다른 의미임) 또한 correlation과 다르게 MI는 두 변수 사이의 non-linear한 통계적 dependency를 측정하므로 true dependence의 measure로 사용가능 하다.[관련연구](https://www.pnas.org/content/111/9/3354.short)
 
