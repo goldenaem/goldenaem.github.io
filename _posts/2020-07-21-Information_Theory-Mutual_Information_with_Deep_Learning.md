@@ -22,7 +22,7 @@ deep learning에서 자주쓰이는 cross-entropy loss는 두개의 probability 
 
 해당 포스트에서 중점적으로 다루고자하는 내용인 mutual information은 상호 정보량이며, 다른 random variable를 관찰하여 하나의 random variable에 대하여 얻을 수 있는 정보량을 말한다. 쉽게 말해 두 random variable의 정보량의 intersection(교집합), 공유하고 있는 정보량이라고 해석할 수 있다. $$I(X;Y) = \sum_{x,y}p(x,y) \log {p(x,y)\over p(x)p(y)}$$ (joint entropy에서 사용하는 comma와 mutual information의 semi-colon은 다른 의미임) 또한 correlation과 다르게 MI는 두 변수 사이의 non-linear한 통계적 dependency를 측정하므로 true dependence의 measure로 사용가능 하다.[관련연구](https://www.pnas.org/content/111/9/3354.short)
 
-위의 내용들은 아래와 같은 여러 특성을 가진다.(Gray, Entropy and Information Theory 참조)
+위의 내용들은 아래와 같은 여러 특성을 가진다.(Gray, Entropy and Information Theory 참조)  
 $$0 \leq H(X\|Y) \leq H(X)$$  
 $$I(X;Y) = H(X) + H(Y) - H(X,Y) = H(X) - H(X\|Y) = H(Y) - H(Y\|X)$$  
 $$I(X;Y) = D_{KL}(P_{X,Y} \|\| P_X \times P_Y)$$ X, Y의 MI는 X, Y와 joint와 product of marginal의 KLD  
@@ -76,7 +76,7 @@ $$\min_{G} \max_{D} V(D,G) := \mathbb{E}_{\mathbb{P}_{X}}[D(X)] + \mathbb{E}_{\m
 
 DIM
 
-![DIM_model](/assets/images/dim_model_archi.png)
+![DIM_model](/assets/images/dim_model_archi.jpg)
 
 Infomax는 입력과 출력 데이터 간의 MI를 최대화하는 학습 방법론이다. 여기에 신경망 모델을 사용하여 표상학습을 수행한 연구가 DIM이다. 구조를 간단히 설명하면, positive input $$X$$와 negative input $$X'$$가 encoder $$C_{\psi}$$를 거친 후에, $$M \times M$$ feature map $$C_{\psi}(x) := \{ C_\psi^{(i)} \}_{i=1}^{M \times M}$$
 
