@@ -16,7 +16,7 @@ categories: 표상학습 pre-train self-supervised mutual-information informatio
 
 deep learning에서 자주쓰이는 cross-entropy loss는 두개의 probability distribution p와 q에 대하여 $$H(p,q) = -\sum_{x \in X}p(x) \log q(x)$$이다. 두 확률 분포 p, q를 구분하는데 필요한 정보량(평균 비트 수)라고 한다. joint entropy와의 차이점을 정리하자면 joint entropy는 두 개의 random variable에 대하여 동일한 probability measure에 대한 값이고, cross entropy는 동일 random variable에 대한 다른 probability measure에 대한 값이다.
 
-이와 관련해서 두 확률분포사이의 거리(엄밀하게는 거리라고 할 수 없음)를 계산하는 함수로 Kullback-Leibler divergence(KLD)가 있다. $$D_{KL}(\mathbb{P}||\mathbb{Q}) = \sum_{x}P(x) \log {P(x) \over Q(x)}$$로 표현하며, deep learning에서는 Variational AutoEncoder 등에서 다른 분포를 통해 이상적인 분포를 근사시켜 샘플링하는 방법으로 사용됨.
+이와 관련해서 두 확률분포사이의 거리(엄밀하게는 거리라고 할 수 없음)를 계산하는 함수로 Kullback-Leibler divergence(KLD)가 있다. $$D_{KL}(\mathbb{P}\|\|\mathbb{Q}) = \sum_{x}P(x) \log {P(x) \over Q(x)}$$로 표현하며, deep learning에서는 Variational AutoEncoder 등에서 다른 분포를 통해 이상적인 분포를 근사시켜 샘플링하는 방법으로 사용됨.
 
 2개의 random variable중에 하나가 주어졌을 때, 다른 하나의 정보량을 나타내는 conditional entropy(조건부 정보량)은 $$H(X|Y) = \mathbb{E}_{Y}[H(X|y)] = -\sum_{y \in Y}p(y)\sum_{x \in X}p(x|y)\log p(x|y) = - \sum_{x,y}p(x,y)\log p(x|y)$$로 표현할 수 있다. 
 
