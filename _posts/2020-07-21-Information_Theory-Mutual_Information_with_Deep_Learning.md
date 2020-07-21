@@ -22,8 +22,11 @@ deep learning에서 자주쓰이는 cross-entropy loss는 두개의 probability 
 
 해당 포스트에서 중점적으로 다루고자하는 내용인 mutual information은 상호 정보량이며, 다른 random variable를 관찰하여 하나의 random variable에 대하여 얻을 수 있는 정보량을 말한다. 쉽게 말해 두 random variable의 정보량의 intersection(교집합), 공유하고 있는 정보량이라고 해석할 수 있다. $$I(X;Y) = \sum_{x,y}p(x,y) \log {p(x,y)\over p(x)p(y)}$$ (joint entropy에서 사용하는 comma와 mutual information의 semi-colon은 다른 의미임) 또한 correlation과 다르게 MI는 두 변수 사이의 non-linear한 통계적 dependency를 측정하므로 true dependence의 measure로 사용가능 하다.[관련연구](https://www.pnas.org/content/111/9/3354.short)
 
+$$ 0 \leq H(X\|Y) \leq H(X) $$
+
+
 위의 내용들은 아래와 같은 여러 특성을 가진다.(Gray, Entropy and Information Theory 참조)
-$$ 0 \leq H(X\|Y) \leq H(X) $$,
+$$ 0 \leq H(X\|Y) \leq H(X) $$
 $$ I(X;Y) = H(X) + H(Y) - H(X,Y) = H(X) - H(X\|Y) = H(Y) - H(Y\|X) $$,
 $$ I(X;Y) = D_{KL}(P_{X,Y} \|\| P_X \times P_Y)$$ X, Y의 MI는 X, Y와 joint와 product of marginal의 KLD,
 $$ 0 \leq I(X;Y) \leq min(H(X), H(Y)) $$,
