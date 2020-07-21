@@ -8,9 +8,9 @@ categories: 표상학습 pre-train self-supervised mutual-information informatio
 
 정보이론에 대한 개념은 [(1)](https://en.wikipedia.org/wiki/Information_theory) [(2)](https://namu.wiki/w/%EC%97%94%ED%8A%B8%EB%A1%9C%ED%94%BC) [(3)](https://ratsgo.github.io/statistics/2017/09/22/information/)를 참고. 해당 포스트에서는 내용을 간략히 정리하고 이를 어떻게 deep learning 연구에 활용하는지에 초점을 맞추려고 한다.
 
-먼저, entropy는 한 메시지에 들어갈 정보량을 비트수로 표현한 값이며, $$H(X) = -\sum_{i=1}^{n} p(x_i) \log_{2} p(x_{i})$$ 이다. (이때 $$p(x_{i})$$ 는 discrete random variable $$x_i$$를 입력으로 확률값을 나타내주는 Probability Mass Functiond이다.)
+먼저, entropy는 한 메시지에 들어갈 정보량을 비트수로 표현한 값이며, $$H(X) = -\sum_{i=1}^{n} p(x_i) \log_{2} p(x_{i})$$ 이다. (이때 $$p(x_{i})$$ 는 discrete random variable $$x_i$$ 를 입력으로 확률값을 나타내주는 Probability Mass Functiond이다.)
 
-2개의 random variable $$X$$와 $$Y$$에서 두 random variable의 joint entropy(정보량의 합)은 $$H(X,Y) = \mathbb{E}_{X,Y}[-\log(p(x,y))]=-\sum_{x,y}p(x,y)\log(p(x,y))$$ 이다.
+2개의 random variable $$X$$ 와 $$Y$$ 에서 두 random variable의 joint entropy(정보량의 합)은 $$H(X,Y) = \mathbb{E}_{X,Y}[-\log(p(x,y))]=-\sum_{x,y}p(x,y)\log(p(x,y))$$ 이다.
 
 deep learning에서 자주쓰이는 cross-entropy loss는 두개의 probability distribution p와 q에 대하여 $$H(p,q) = -\sum_{x \in X}p(x) \log q(x)$$ 이다. 두 확률 분포 p, q를 구분하는데 필요한 정보량(평균 비트 수)라고 한다. joint entropy와의 차이점을 정리하자면 joint entropy는 두 개의 random variable에 대하여 동일한 probability measure에 대한 값이고, cross entropy는 동일 random variable에 대한 다른 probability measure에 대한 값이다.
 
@@ -98,7 +98,7 @@ CPC
 
 ![CPC_model](/assets/images/cpc_model_archi.JPG)
 
-CPC는 입력 sequence $$x_t$$에서 encoder를 통해 뽑아낸 feature $$z_t = g_{enc}(x_t)$$ 를 autoregressive model $$g_{ar}$$ 을 통해 context $$c_t = g_{ar}(Z_{\leq t}$$ 를 생성하여, 입력 $$x_{t+k}$$ 와 context $$c_t$$ 의 MI를 maximizing하는 방향으로 학습시킴. 즉 self-supervised learning으로 입력 데이터 내부적으로 다음 step의 정보를 맞춤으로써 데이터의 표상을 학습하도록 함. 이 때 $$x_t$$를 직접 predicting하는 것은 reconstruction task에 과적합되기도 하며, 논문에서 Mean Squared Error(MSE)나 cross-entropy를 사용하는게 효과적이지 않고, 어렵다는 주장을 한다.
+CPC는 입력 sequence $$x_t$$ 에서 encoder를 통해 뽑아낸 feature $$z_t = g_{enc}(x_t)$$ 를 autoregressive model $$g_{ar}$$ 을 통해 context $$c_t = g_{ar}(Z_{\leq t}$$ 를 생성하여, 입력 $$x_{t+k}$$ 와 context $$c_t$$ 의 MI를 maximizing하는 방향으로 학습시킴. 즉 self-supervised learning으로 입력 데이터 내부적으로 다음 step의 정보를 맞춤으로써 데이터의 표상을 학습하도록 함. 이 때 $$x_t$$ 를 직접 predicting하는 것은 reconstruction task에 과적합되기도 하며, 논문에서 Mean Squared Error(MSE)나 cross-entropy를 사용하는게 효과적이지 않고, 어렵다는 주장을 한다.
 
 
 Information Bottlenekc
