@@ -2,6 +2,7 @@
 title: "Mockingjay : Unsupervised Speech Representation Learning With Deep Bidirectional Transformer Encoders"
 date: 2020-07-20 00:06:28 -0400
 categories: 표상학습 pre-train self-supervised BERT Speech Mockingjay 
+use_math : true
 ---
 
 해당 포스트에서 정리할 논문은 [Mockingjay](https://arxiv.org/pdf/1910.12638.pdf)다. (2019년 10월 25일자 논문)

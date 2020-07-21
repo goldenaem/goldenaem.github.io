@@ -2,6 +2,7 @@
 title: "Signal Processing - preprocessing"
 date: 2020-07-14 00:06:28 -0400
 categories: Signal_Processing spectrogram mel-spectrogram STFT Fourier wave preprocessing
+use_math : true
 ---
 
 해당 포스트는 신호처리, 소리 데이터를 deep learning(pytorch)에 적용하기 위한 개념과 코드를 정리하고자 합니다.
