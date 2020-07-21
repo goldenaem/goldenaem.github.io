@@ -6,11 +6,11 @@ categories: 표상학습 pre-train self-supervised mutual-information informatio
 
 정보이론(entropy, cross-entropy, KL divergence, MI, MINE, DIM, CPC)
 
-해당 포스트는 정보이론 그 중에서도 Mutual Information(MI)과 MI를 이용한 표상학습에 대한 연구 및 구현 코드를 정리하였습니다. 
+해당 포스트는 정보이론 그 중에서도 Mutual Information(MI)과 MI를 이용한 표상학습에 대한 연구 및 구현 코드를 정리하였습니다.  $$a = 2$$
 
 정보이론에 대한 개념은 [(1)](https://en.wikipedia.org/wiki/Information_theory) [(2)](https://namu.wiki/w/%EC%97%94%ED%8A%B8%EB%A1%9C%ED%94%BC) [(3)](https://ratsgo.github.io/statistics/2017/09/22/information/)를 참고. 해당 포스트에서는 내용을 간략히 정리하고 이를 어떻게 deep learning 연구에 활용하는지에 초점을 맞추려고 한다.
 
-간단하게 정리하자면, entropy는 한 메시지에 들어갈 정보량을 비트수로 표현한 값이며, $$H(X) = -\sum_{i=1}^{n}p(x_i)\log_{2}{p(x_i)}$$이다.(이떄 $$p(x_i)$$는 discrete random variable $$x_i$$를 입력으로 확률값을 나타내주는 Probability Mass Functiond이다.)
+간단하게 정리하자면, entropy는 한 메시지에 들어갈 정보량을 비트수로 표현한 값이며, $$H(X) = -\sum_{i=1}^{n}p(x_i)\log_{2}{p(x_i)}$$이다.(이때 $$p(x_i)$$는 discrete random variable $$x_i$$를 입력으로 확률값을 나타내주는 Probability Mass Functiond이다.)
 
 2개의 random variable $$X$$와 $$Y$$에서 두 random variable의 joint entropy(정보량의 합)은 $$H(X,Y) = \mathbb{E}_{X,Y}[-\log(p(x,y))]=-\sum_{x,y}p(x,y)\log(p(x,y))$$이다.
 
