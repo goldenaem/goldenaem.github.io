@@ -2,6 +2,7 @@
 title: "Information Theory : Mutual Information with Deep Learning"
 date: 2020-07-21 00:06:28 -0400
 categories: 표상학습 pre-train self-supervised mutual-information information-theory entropy cross-entropy kl-divergence MINE DIM CPC information-bottleneck
+use_math : true
 ---
 
 해당 포스트는 정보이론, 그 중에서도 Mutual Information(MI)과 MI를 이용한 표상학습에 대한 연구 및 구현 코드를 정리하였습니다. 
