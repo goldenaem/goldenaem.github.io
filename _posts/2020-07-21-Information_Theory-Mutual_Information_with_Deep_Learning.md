@@ -8,7 +8,7 @@ categories: 표상학습 pre-train self-supervised mutual-information informatio
 
 해당 포스트는 정보이론 그 중에서도 Mutual Information(MI)과 MI를 이용한 표상학습에 대한 연구 및 구현 코드를 정리하였습니다. 
 
-정보이론에 대한 개념은 [1](https://en.wikipedia.org/wiki/Information_theory)[2](https://namu.wiki/w/%EC%97%94%ED%8A%B8%EB%A1%9C%ED%94%BC)[3](https://ratsgo.github.io/statistics/2017/09/22/information/)를 참고. 해당 포스트에서는 내용을 간략히 정리하고 이를 어떻게 deep learning 연구에 활용하는지에 초점을 맞추려고 한다.
+정보이론에 대한 개념은 [(1)](https://en.wikipedia.org/wiki/Information_theory) [(2)](https://namu.wiki/w/%EC%97%94%ED%8A%B8%EB%A1%9C%ED%94%BC) [(3)](https://ratsgo.github.io/statistics/2017/09/22/information/)를 참고. 해당 포스트에서는 내용을 간략히 정리하고 이를 어떻게 deep learning 연구에 활용하는지에 초점을 맞추려고 한다.
 
 간단하게 정리하자면, entropy는 한 메시지에 들어갈 정보량을 비트수로 표현한 값이며, $$H(X) = -\sum_{i=1}^{n}p(x_i)\log_{2}{p(x_i)}$$이다.(이떄 $$p(x_i)$$는 discrete random variable $$x_i$$를 입력으로 확률값을 나타내주는 Probability Mass Functiond이다.)
 
@@ -18,26 +18,26 @@ deep learning에서 자주쓰이는 cross-entropy loss는 두개의 probability 
 
 이와 관련해서 두 확률분포사이의 거리(엄밀하게는 거리라고 할 수 없음)를 계산하는 함수로 Kullback-Leibler divergence(KLD)가 있다. $$D_{KL}(\mathbb{P}\|\|\mathbb{Q}) = \sum_{x}P(x) \log {P(x) \over Q(x)}$$로 표현하며, deep learning에서는 Variational AutoEncoder 등에서 다른 분포를 통해 이상적인 분포를 근사시켜 샘플링하는 방법으로 사용됨.
 
-2개의 random variable중에 하나가 주어졌을 때, 다른 하나의 정보량을 나타내는 conditional entropy(조건부 정보량)은 $$H(X|Y) = \mathbb{E}_{Y}[H(X\|y)] = -\sum_{y \in Y}p(y)\sum_{x \in X}p(x|y)\log p(x|y) = - \sum_{x,y}p(x,y)\log p(x|y)$$로 표현할 수 있다. 
+2개의 random variable중에 하나가 주어졌을 때, 다른 하나의 정보량을 나타내는 conditional entropy(조건부 정보량)은 $$H(X|Y) = \mathbb{E}_{Y}[H(X\|y)] = -\sum_{y \in Y}p(y)\sum_{x \in X}p(x\|y)\log p(x\|y) = - \sum_{x,y}p(x,y)\log p(x\|y)$$로 표현할 수 있다. 
 
 해당 포스트에서 중점적으로 다루고자하는 내용인 mutual information은 상호 정보량이며, 다른 random variable를 관찰하여 하나의 random variable에 대하여 얻을 수 있는 정보량을 말한다. 쉽게 말해 두 random variable의 정보량의 intersection(교집합), 공유하고 있는 정보량이라고 해석할 수 있다. $$I(X;Y) = \sum_{x,y}p(x,y) \log {p(x,y)\over p(x)p(y)}$$ (joint entropy에서 사용하는 comma와 mutual information의 semi-colon은 다른 의미임) 또한 correlation과 다르게 MI는 두 변수 사이의 non-linear한 통계적 dependency를 측정하므로 true dependence의 measure로 사용가능 하다.[관련연구](https://www.pnas.org/content/111/9/3354.short)
 
 위의 내용들은 아래와 같은 여러 특성을 가진다.(Gray, Entropy and Information Theory 참조)
-$$0 \leq H(X|Y) \leq H(X)$$<br>
-$$I(X;Y) = H(X) + H(Y) - H(X,Y) = H(X) - H(X|Y) = H(Y) - H(Y|X)$$<br>
-$$I(X;Y) = D_{KL}(P_{X,Y} || P_X \times P_Y)$$<br> X, Y의 MI는 X, Y와 joint와 product of marginal의 KLD
-$$0 \leq I(X;Y) \leq min(H(X), H(Y))$$<br>
-$$I(f(X);g(Y)) \leq I(X;Y)$$<br>
-$$I(f(X);g(Y)|Z) \leq I(X;Y|Z)$$<br>
-$$H(f(X) | X) = 0$$<br>
-$$H(X, f(X)) = H(X)$$<br>
-$$H(X) = H(f(X)) + H(X|f(X))$$<br>
-$$I(X;f(X)) = H(f(X))$$<br>
-$$H(X|g(Y)) \geq H(X|Y)$$<br>
-$$I(f(X) ; g(Y)) \leq I(X;Y)$$<br>
-$$H(X, f(X,Y) |Y) = H(X|Y)$$<br>
-$$H(X|Y) \geq H(X|Y,Z)$$<br>
-$$I(X;Y|Z) + I(YlZ) = I(Y;(X,Z))$$<br>
+$$0 \leq H(X\|Y) \leq H(X)$$  
+$$I(X;Y) = H(X) + H(Y) - H(X,Y) = H(X) - H(X\|Y) = H(Y) - H(Y\|X)$$  
+$$I(X;Y) = D_{KL}(P_{X,Y} \|\| P_X \times P_Y)$$ X, Y의 MI는 X, Y와 joint와 product of marginal의 KLD  
+$$0 \leq I(X;Y) \leq min(H(X), H(Y))$$  
+$$I(f(X);g(Y)) \leq I(X;Y)$$  
+$$I(f(X);g(Y)\|Z) \leq I(X;Y\|Z)$$  
+$$H(f(X) \| X) = 0$$  
+$$H(X, f(X)) = H(X)$$  
+$$H(X) = H(f(X)) + H(X\|f(X))$$  
+$$I(X;f(X)) = H(f(X))$$  
+$$H(X\|g(Y)) \geq H(X\|Y)$$  
+$$I(f(X) ; g(Y)) \leq I(X;Y)$$  
+$$H(X, f(X,Y) \|Y) = H(X\|Y)$$  
+$$H(X\|Y) \geq H(X\|Y,Z)$$  
+$$I(X;Y\|Z) + I(Y;Z) = I(Y;(X,Z))$$  
 
 위에 정리한 내용을 이해를 위해 벤다이어그램으로 그리면 아래와 같다.
 
