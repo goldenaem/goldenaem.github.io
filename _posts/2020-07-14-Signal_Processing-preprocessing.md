@@ -1,4 +1,4 @@
----
+<!-- ---
 title: "Signal Processing - preprocessing"
 date: 2020-07-14 00:06:28 -0400
 categories: Signal_Processing spectrogram mel-spectrogram STFT Fourier wave preprocessing
@@ -362,3 +362,4 @@ dataloader의 사용법은 매우 단순하다. for loop에서 batch 단위로 s
 	Brightwon.tistory.com. [online] Available at: <https://brightwon.tistory.com/11> [Accessed 14 July 2020].
 	towardsdatascience.com. [online] Available at: <https://towardsdatascience.com/getting-to-know-the-mel-spectrogram-31bca3e2d9d0> [Accessed 14 July 2020].
 	Sturm, Bob L. "The GTZAN dataset: Its contents, its faults, their effects on evaluation, and its future use." arXiv preprint arXiv:1306.1461 (2013).
+ -->
