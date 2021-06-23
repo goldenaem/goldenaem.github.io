@@ -1,4 +1,4 @@
----
+<!-- ---
 title: "Information Theory : Mutual Information with Deep Learning"
 date: 2020-07-21 00:06:28 -0400
 categories: 표상학습 pre-train self-supervised mutual-information information-theory entropy cross-entropy kl-divergence MINE DIM CPC information-bottleneck
@@ -119,4 +119,4 @@ Information Bottlenekc
   Martin, Elliot A., et al. "Network inference and maximum entropy estimation on information diagrams." Scientific Reports 7.1 (2017): 1-15.
   Gray, Robert M. Entropy and information theory. Springer Science & Business Media, 2011.
   Belghazi, Mohamed Ishmael, et al. "Mine: mutual information neural estimation." arXiv preprint arXiv:1801.04062 (2018).
-  Kinney, Justin B., and Gurinder S. Atwal. "Equitability, mutual information, and the maximal information coefficient." Proceedings of the National Academy of Sciences 111.9 (2014): 3354-3359.
+  Kinney, Justin B., and Gurinder S. Atwal. "Equitability, mutual information, and the maximal information coefficient." Proceedings of the National Academy of Sciences 111.9 (2014): 3354-3359. -->
