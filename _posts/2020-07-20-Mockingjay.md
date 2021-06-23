@@ -1,4 +1,4 @@
----
+<!-- ---
 title: "Mockingjay : Unsupervised Speech Representation Learning With Deep Bidirectional Transformer Encoders"
 date: 2020-07-20 00:06:28 -0400
 categories: 표상학습 pre-train self-supervised BERT Speech Mockingjay 
@@ -29,3 +29,4 @@ mask token대신 해당 frame값을 0으로 채워서 masking의 의미로 사�
   Liu, Andy T., et al. "Mockingjay: Unsupervised speech representation learning with deep bidirectional transformer encoders." ICASSP 2020-2020 IEEE International Conference on Acoustics, Speech and Signal Processing (ICASSP). IEEE, 2020.
   Sperber, Matthias, et al. "Self-attentional acoustic models." arXiv preprint arXiv:1803.09519 (2018).
   https://github.com/andi611/Self-Supervised-Speech-Pretraining-and-Representation-Learning
+ -->
